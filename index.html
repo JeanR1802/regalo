@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Para ti, Princesa ❤️</title>
+    <style>
+        /* --- FUENTES Y RESET --- */
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Pacifico&family=Quicksand:wght@400;700&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        :root {
+            /* Colores de fondo */
+            --bg-intro: linear-gradient(135deg, #fff1eb 0%, #ace0f9 100%); 
+            --bg-flower: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            --bg-dark: linear-gradient(135deg, #1a1c20 0%, #0f0f10 100%);   
+            --bg-pinata: linear-gradient(135deg, #2b6cb0 0%, #2c5282 100%); /* Azul noche piñata */
+            --bg-final: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            
+            --text-color: #333333;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: var(--bg-intro);
+            background-size: 400% 400%;
+            transition: background 1s ease;
+            overflow: hidden; /* Importante para la piñata */
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overscroll-behavior: none;
+        }
+
+        /* --- TIPOGRAFÍA --- */
+        h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: #d946ef;
+            text-shadow: 2px 2px 0px rgba(255,255,255,0.5);
+            text-align: center;
+            line-height: 1.2;
+            z-index: 20;
+        }
+        
+        p {
+            font-size: 1.1rem;
+            text-align: center;
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+            max-width: 85%;
+            line-height: 1.5;
+            font-weight: 600;
+            z-index: 20;
+        }
+        
+        .highlight {
+            color: #ec4899;
+            font-weight: bold;
+        }
+
+        /* --- ESCENAS --- */
+        .scene {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            padding: 20px;
+            transform: scale(0.95);
+            z-index: 1;
+        }
+
+        .scene.active {
+            opacity: 1;
+            pointer-events: all;
+            transform: scale(1);
+            z-index: 10;
+        }
+
+        /* --- BOTONES GENERALES --- */
+        button {
+            background: linear-gradient(to right, #ff512f, #dd2476);
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            border: 2px solid white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: transform 0.1s, box-shadow 0.2s;
+            outline: none;
+            font-family: 'Quicksand', sans-serif;
+            margin-top: 15px;
+            z-index: 50; /* Asegurar que esté encima */
+            position: relative;
+        }
+
+        button:active { transform: scale(0.95); }
+        
+        button.count-btn {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            font-size: 3rem;
+            background: linear-gradient(to right, #ff5e62, #ff9966);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 153, 102, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(255, 153, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 153, 102, 0); }
+        }
+
+        /* --- GIRASOL --- */
+        @keyframes sway {
+            0% { transform: rotate(-1deg); }
+            50% { transform: rotate(1deg); }
+            100% { transform: rotate(-1deg); }
+        }
+        .swaying-flower {
+            transform-origin: bottom center; 
+            animation: sway 4s ease-in-out infinite alternate;
+            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.15));
+        }
+
+        /* --- MODO OSCURO (PASTEL) --- */
+        body.dark-mode {
+            background: var(--bg-dark) !important;
+        }
+        body.dark-mode h1 { 
+            color: #F472B6; 
+            text-shadow: 0 0 15px rgba(244, 114, 182, 0.6); 
+        }
+        body.dark-mode p { 
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+        
+        .candle-glow {
+            filter: drop-shadow(0 0 20px rgba(255, 200, 0, 0.8));
+            transition: filter 0.5s ease;
+        }
+        
+        @keyframes flicker {
+            0%, 100% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+        .flame {
+            transform-box: fill-box;
+            transform-origin: center bottom;
+            animation: flicker 1s infinite ease-in-out;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        
+        /* CORRECCIÓN VELAS APAGADAS */
+        .flame.out { 
+            opacity: 0 !important; 
+            transform: scale(0.5) !important;
+            animation: none !important;
+        }
+        
+        .candle-glow.off {
+            filter: none !important;
+        }
+
+        /* --- ESTILOS PIÑATA --- */
+        #rope {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 4px;
+            background-color: #f6e05e;
+            transform-origin: top center;
+            pointer-events: none;
+            z-index: 10;
+        }
+        #pinata-wrapper {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            width: 0;
+            height: 0;
+            z-index: 20;
+            will-change: transform;
+            cursor: pointer;
+        }
+        #pinata-svg {
+            width: 280px;
+            height: 280px;
+            transform: translate(-50%, 0);
+            filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.3));
+            transition: filter 0.1s;
+        }
+        .hit-effect {
+            filter: brightness(1.3) contrast(1.2) !important;
+            transform: translate(-50%, 0) scale(0.97) !important;
+        }
+        #particles-canvas {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 30;
+        }
+        /* UI Piñata */
+        .pinata-ui {
+            position: absolute;
+            bottom: 40px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            z-index: 40;
+            pointer-events: none;
+        }
+        .progress-bar-bg {
+            width: 70%; max-width: 250px; height: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 6px; margin: 0 auto;
+            border: 1px solid rgba(255,255,255,0.5);
+            overflow: hidden;
+        }
+        .progress-bar-fill {
+            height: 100%; width: 100%;
+            background: linear-gradient(90deg, #d53f8c, #805ad5, #3182ce);
+            transition: width 0.2s;
+        }
+        #pinata-message {
+            font-size: 1.8rem; font-weight: 800;
+            color: #fff; text-shadow: 0px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 15px; opacity: 0;
+            transform: translateY(10px); transition: all 0.3s;
+        }
+        #pinata-message.show { opacity: 1; transform: translateY(0); }
+        
+        #continue-btn {
+            pointer-events: auto;
+            background: linear-gradient(to right, #48bb78, #38a169);
+            border: none; color: white; font-weight: bold;
+            padding: 12px 30px; border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transform: scale(0); transition: transform 0.3s;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        #continue-btn.show { transform: scale(1); }
+
+        /* --- MODO FINAL (CARTA) --- */
+        body.final-mode {
+            background: var(--bg-final) !important;
+        }
+        .card-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            max-width: 320px;
+            text-align: center;
+            border: 4px solid #fff;
+        }
+
+        /* Canvas Confeti General */
+        #confetti-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 50;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- ESCENA 1: INTRODUCCIÓN -->
+    <div id="scene-intro" class="scene active">
+        <h1>Hola Princesa... ✨</h1>
+        <p>Tengo un detalle especial para ti.<br>Aunque estemos lejos, te siento muy cerca.</p>
+        <p>Cierra los ojos un momento, la sorpresa llega en...</p>
+        <button onclick="iniciarCuentaAtras()">Empezar</button>
+    </div>
+
+    <!-- ESCENA 2: CUENTA REGRESIVA -->
+    <div id="scene-countdown" class="scene">
+        <h1>Cuenta conmigo...</h1>
+        <button id="counter-btn" class="count-btn" style="pointer-events: none;">3</button>
+        <p id="count-text" style="margin-top: 25px; font-weight: bold; color: #555;">Preparando...</p>
+    </div>
+
+    <!-- ESCENA 3: EL GIRASOL -->
+    <div id="scene-flower" class="scene">
+        <h1>Para ti 🌻</h1>
+        
+        <div style="width: 260px; margin: 0 auto;">
+            <svg viewBox="0 0 300 400" class="w-full h-auto" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="stemGradient" x1="0" x2="1" y1="0" y2="0">
+                        <stop offset="0%" stop-color="#2e7d32" />
+                        <stop offset="100%" stop-color="#4caf50" />
+                    </linearGradient>
+                    <path id="petal_00" d="M 0 0 Q 15 -30 10 -100 Q 0 -115 -10 -100 Q -15 -30 0 0 Z" />
+                    <g id="FlowerHead">
+                        <g fill="#ffb300">
+                            <use href="#petal_00" transform="rotate(0)" /><use href="#petal_00" transform="rotate(45)" /><use href="#petal_00" transform="rotate(90)" /><use href="#petal_00" transform="rotate(135)" /><use href="#petal_00" transform="rotate(180)" /><use href="#petal_00" transform="rotate(225)" /><use href="#petal_00" transform="rotate(270)" /><use href="#petal_00" transform="rotate(315)" />
+                        </g>
+                        <g fill="#ffeb3b" transform="rotate(22.5)">
+                            <use href="#petal_00" transform="rotate(0)" /><use href="#petal_00" transform="rotate(45)" /><use href="#petal_00" transform="rotate(90)" /><use href="#petal_00" transform="rotate(135)" /><use href="#petal_00" transform="rotate(180)" /><use href="#petal_00" transform="rotate(225)" /><use href="#petal_00" transform="rotate(270)" /><use href="#petal_00" transform="rotate(315)" />
+                        </g>
+                        <circle cx="0" cy="0" r="40" fill="#5d4037" stroke="#3e2723" stroke-width="2" />
+                    </g>
+                </defs>
+                <g class="swaying-flower">
+                    <rect x="145" y="150" width="10" height="250" fill="url(#stemGradient)" />
+                    <path d="M 150 250 Q 100 280 80 200 Q 120 230 150 250 Z" fill="#4caf50" transform="rotate(-5, 150, 150)" stroke="#2e7d32" stroke-width="1" />
+                    <use href="#FlowerHead" transform="translate(150, 150) scale(1.0)" />
+                </g>
+            </svg>
+        </div>
+        <p>Como este girasol busca el sol, yo busco tu sonrisa.</p>
+        <button onclick="prepararPastel()">Siguiente sorpresa ✨</button>
+    </div>
+
+    <!-- ESCENA 4: EL PASTEL -->
+    <div id="scene-cake" class="scene">
+        <h1>¡Feliz Cumpleaños!</h1>
+        <p>Pide un deseo y sopla las velas ✨</p>
+
+        <div id="cake-container" class="candle-glow" style="width: 260px; height: 260px; margin: 20px auto;">
+            <svg viewBox="0 0 300 300" style="width: 100%; height: 100%;">
+                <ellipse cx="150" cy="260" rx="130" ry="25" fill="#eceff1" />
+                <ellipse cx="150" cy="255" rx="110" ry="20" fill="#fff" />
+                <path d="M 60 240 L 60 160 C 60 160, 150 175, 240 160 L 240 240 C 240 260, 150 275, 60 240" fill="#8d6e63" />
+                <ellipse cx="150" cy="160" rx="90" ry="18" fill="#a1887f" />
+                <path d="M 60 160 C 60 140, 240 140, 240 160 L 240 170 Q 220 195, 200 175 Q 180 155, 160 180 Q 140 200, 120 180 Q 100 160, 80 185 Q 65 195, 60 175 Z" fill="#f48fb1" />
+                <ellipse cx="150" cy="155" rx="85" ry="16" fill="#f8bbd0" />
+                <circle cx="100" cy="155" r="8" fill="#ef5350" /><circle cx="130" cy="165" r="8" fill="#ef5350" /><circle cx="170" cy="165" r="8" fill="#ef5350" /><circle cx="200" cy="155" r="8" fill="#ef5350" />
+                
+                <g id="candles">
+                    <g transform="translate(115, 150)">
+                        <text x="0" y="0" font-family="'Fredoka One', cursive" font-size="80" fill="#4db6ac" stroke="#00897b" stroke-width="2">2</text>
+                        <line x1="22" y1="-60" x2="22" y2="-75" stroke="#ccc" stroke-width="2" />
+                        <path class="flame" d="M 22 -75 Q 12 -95, 22 -110 Q 32 -95, 22 -75" fill="#ffca28" />
+                    </g>
+                    <g transform="translate(165, 150)">
+                        <text x="0" y="0" font-family="'Fredoka One', cursive" font-size="80" fill="#4db6ac" stroke="#00897b" stroke-width="2">1</text>
+                        <line x1="22" y1="-60" x2="22" y2="-75" stroke="#ccc" stroke-width="2" />
+                        <path class="flame" d="M 22 -75 Q 12 -95, 22 -110 Q 32 -95, 22 -75" fill="#ffca28" />
+                    </g>
+                </g>
+            </svg>
+        </div>
+
+        <button id="blowBtn" onclick="soplarVelas()">
+            💨 Soplar Velas
+        </button>
+    </div>
+
+    <!-- ESCENA 5: LA PIÑATA -->
+    <div id="scene-pinata" class="scene">
+        <canvas id="particles-canvas"></canvas>
+        <div id="rope"></div>
+        
+        <div id="pinata-wrapper">
+            <svg id="pinata-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="grad-pink" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#ed64a6;stop-opacity:1" /><stop offset="100%" style="stop-color:#b83280;stop-opacity:1" /></linearGradient>
+                    <linearGradient id="grad-yellow" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#faf089;stop-opacity:1" /><stop offset="100%" style="stop-color:#d69e2e;stop-opacity:1" /></linearGradient>
+                    <linearGradient id="grad-blue" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#63b3ed;stop-opacity:1" /><stop offset="100%" style="stop-color:#3182ce;stop-opacity:1" /></linearGradient>
+                    <linearGradient id="grad-purple" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#9f7aea;stop-opacity:1" /><stop offset="100%" style="stop-color:#6b46c1;stop-opacity:1" /></linearGradient>
+                    <linearGradient id="grad-green" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#68d391;stop-opacity:1" /><stop offset="100%" style="stop-color:#38a169;stop-opacity:1" /></linearGradient>
+                </defs>
+                <g id="pinata-body">
+                    <circle cx="150" cy="150" r="45" fill="#e2e8f0" stroke="#cbd5e0" stroke-width="1"/>
+                    <circle cx="150" cy="150" r="45" fill="#ed64a6" /><circle cx="150" cy="150" r="35" fill="#9f7aea" /><circle cx="150" cy="150" r="25" fill="#63b3ed" /><circle cx="150" cy="150" r="15" fill="#faf089" />
+                    <path d="M150 115 L130 110 L150 20 L170 110 Z" fill="url(#grad-yellow)" /><path d="M150 20 Q140 10 150 0 Q160 10 150 20" fill="none" stroke="#d69e2e" stroke-width="3"/>
+                    <path d="M175 125 L180 145 L270 90 L175 125 Z" fill="url(#grad-pink)" /><path d="M270 90 Q280 80 290 85" fill="none" stroke="#ed64a6" stroke-width="3"/>
+                    <path d="M175 175 L165 185 L230 260 L180 165 Z" fill="url(#grad-blue)" /><path d="M230 260 Q240 270 235 280" fill="none" stroke="#4299e1" stroke-width="3"/>
+                    <path d="M125 175 L135 185 L70 260 L120 165 Z" fill="url(#grad-green)" /><path d="M70 260 Q60 270 65 280" fill="none" stroke="#48bb78" stroke-width="3"/>
+                    <path d="M125 125 L120 145 L30 90 L125 125 Z" fill="url(#grad-purple)" /><path d="M30 90 Q20 80 10 85" fill="none" stroke="#9f7aea" stroke-width="3"/>
+                    <circle cx="150" cy="150" r="50" fill="none" stroke="white" stroke-width="2" stroke-dasharray="4 4" opacity="0.6"/>
+                    <path d="M148 20 L148 5 M152 20 L152 5" stroke="#d69e2e" stroke-width="2"/>
+                </g>
+            </svg>
+        </div>
+
+        <div class="pinata-ui">
+            <div id="pinata-message">¡DALE DALE!</div>
+            <div class="progress-bar-bg">
+                <div id="health-bar" class="progress-bar-fill"></div>
+            </div>
+            <button id="continue-btn" onclick="irACarta()">VER CARTA</button>
+        </div>
+    </div>
+
+    <!-- ESCENA 6: CARTA FINAL -->
+    <div id="scene-final" class="scene">
+        <div class="card-container">
+            <h1 style="font-size: 2.2rem; margin-bottom: 20px;">¡Para ti! 🎉</h1>
+            <p style="font-size: 1rem; color: #444; margin-bottom: 15px;">
+                Aunque hoy no pude darte flores reales ni estar ahí para compartir el pastel, 
+                quiero que sepas que te celebro desde aquí.
+            </p>
+            <p style="font-size: 1.1rem; color: #ec4899; font-weight: bold; margin-bottom: 20px;">
+                te mando muchos besos y abrazos.
+            </p>
+            <div style="border-top: 1px solid #eee; padding-top: 15px; color: #777; font-size: 0.9rem;">
+                Con mucho amor, desde la distancia. ❤️
+            </div>
+            <button onclick="location.reload()" style="margin-top: 20px; font-size: 0.9rem; padding: 0.8rem 1.5rem; background: #666;">
+                Ver de nuevo ↺
+            </button>
+        </div>
+    </div>
+
+    <script>
+        /* --- LOGICA GENERAL DE ESCENAS --- */
+        function nextScene(id) {
+            document.querySelectorAll('.scene').forEach(el => el.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            
+            // Fondo según escena
+            if(id === 'scene-intro' || id === 'scene-countdown') {
+                document.body.style.background = 'var(--bg-intro)';
+            } else if (id === 'scene-flower') {
+                document.body.style.background = 'var(--bg-flower)';
+            } else if (id === 'scene-cake') {
+                document.body.classList.add('dark-mode');
+                document.body.style.background = 'var(--bg-dark)';
+            } else if (id === 'scene-pinata') {
+                document.body.classList.remove('dark-mode');
+                document.body.style.background = 'var(--bg-pinata)';
+                startPinataGame(); // Iniciar piñata
+            } else if (id === 'scene-final') {
+                document.body.style.background = 'var(--bg-final)';
+                lanzarConfetiFinal();
+            }
+        }
+
+        /* --- 1. CUENTA ATRÁS --- */
+        function iniciarCuentaAtras() {
+            nextScene('scene-countdown');
+            const btn = document.getElementById('counter-btn');
+            const txt = document.getElementById('count-text');
+            let timeLeft = 3;
+            btn.innerText = timeLeft;
+            txt.innerText = "Preparando sorpresa...";
+
+            const timer = setInterval(() => {
+                timeLeft--;
+                if (timeLeft > 0) {
+                    btn.innerText = timeLeft;
+                    if(timeLeft === 2) txt.innerText = "Ya casi...";
+                    if(timeLeft === 1) txt.innerText = "¡Lista!";
+                } else {
+                    clearInterval(timer);
+                    nextScene('scene-flower');
+                }
+            }, 1000);
+        }
+
+        /* --- 2. PASTEL --- */
+        function prepararPastel() {
+            nextScene('scene-cake');
+        }
+
+        function soplarVelas() {
+            const blowBtn = document.getElementById('blowBtn');
+            const flames = document.querySelectorAll('.flame');
+            const glow = document.querySelector('.candle-glow');
+
+            // APAGAR VELAS (Corrección aplicada)
+            flames.forEach(flame => {
+                flame.classList.add('out'); // Forzar clase CSS
+            });
+            if(glow) glow.classList.add('off'); // Apagar resplandor
+
+            blowBtn.innerText = "¡Vamos a romper la piñata!";
+            blowBtn.style.background = "#6b46c1"; // Morado piñata
+            
+            setTimeout(() => {
+                nextScene('scene-pinata');
+            }, 1500);
+        }
+
+        /* --- 3. PIÑATA LOGIC --- */
+        const pinataConfig = { ropeLength: 120, maxHealth: 20 };
+        let pinataState = { health: pinataConfig.maxHealth, isBroken: false, time: 0, 
+                            pinata: { x: 0, y: pinataConfig.ropeLength, rotation: 0, vr: 0 }, 
+                            targetY: pinataConfig.ropeLength };
+        
+        let pinataParticles = [];
+        const pinataCanvas = document.getElementById('particles-canvas');
+        const pCtx = pinataCanvas.getContext('2d');
+        let pinataLoopId;
+
+        class PinataParticle {
+            constructor(x, y, type) {
+                this.x = x; this.y = y; this.type = type;
+                const angle = Math.random() * Math.PI * 2;
+                const colors = ['#ed64a6', '#9f7aea', '#63b3ed', '#faf089', '#68d391'];
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+                
+                if (type === 'hit') {
+                    const speed = Math.random() * 6 + 2;
+                    this.vx = Math.cos(angle) * speed;
+                    this.vy = Math.sin(angle) * speed;
+                    this.size = Math.random() * 5 + 2;
+                    this.life = 1.0; this.decay = 0.05; this.gravity = 0.3;
+                } else if (type === 'candy') {
+                    this.vx = (Math.random() - 0.5) * 15;
+                    this.vy = (Math.random() - 0.5) * 15 - 5;
+                    this.size = Math.random() * 8 + 4;
+                    this.life = 1.0; this.decay = 0.005; this.gravity = 0.4;
+                }
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy; this.vy += this.gravity;
+                this.life -= this.decay;
+                if(this.type === 'candy' && this.y > pinataCanvas.height) this.vy *= -0.5;
+            }
+            draw(ctx) {
+                ctx.globalAlpha = this.life; ctx.fillStyle = this.color;
+                ctx.fillRect(this.x, this.y, this.size, this.size);
+            }
+        }
+
+        function resizePCanvas() {
+            pinataCanvas.width = window.innerWidth;
+            pinataCanvas.height = window.innerHeight;
+        }
+
+        function startPinataGame() {
+            resizePCanvas();
+            window.addEventListener('resize', resizePCanvas);
+            
+            const pinataSvg = document.getElementById('pinata-svg');
+            // Asegurar que el evento funcione en móvil y desktop
+            pinataSvg.addEventListener('pointerdown', hitPinata);
+            pinataSvg.addEventListener('click', hitPinata); // Respaldo
+            
+            pinataLoop();
+        }
+
+        function updatePinataPhysics() {
+            if (pinataState.isBroken) return;
+            pinataState.time += 0.05;
+            const swing = Math.sin(pinataState.time * 0.8) * 10;
+            
+            // Movimiento aleatorio
+            if (Math.random() < 0.02) pinataState.targetY = pinataConfig.ropeLength + (Math.random() * 80 - 20);
+            
+            pinataState.pinata.y += (pinataState.targetY - pinataState.pinata.y) * 0.05;
+            pinataState.pinata.rotation = swing + pinataState.pinata.vr;
+            pinataState.pinata.vr *= 0.95;
+
+            const wrapper = document.getElementById('pinata-wrapper');
+            const rope = document.getElementById('rope');
+            
+            wrapper.style.top = `${pinataState.pinata.y}px`;
+            wrapper.style.transform = `translateX(-50%) rotate(${pinataState.pinata.rotation}deg)`;
+            rope.style.height = `${pinataState.pinata.y + 10}px`;
+            rope.style.transform = `translateX(-50%) rotate(${pinataState.pinata.rotation * 0.3}deg)`;
+        }
+
+        function hitPinata(e) {
+            if (pinataState.isBroken) return;
+            e.preventDefault(); e.stopPropagation(); // Evitar doble disparo
+
+            pinataState.health--;
+            const healthPct = (pinataState.health / pinataConfig.maxHealth) * 100;
+            document.getElementById('health-bar').style.width = `${healthPct}%`;
+
+            // Efecto visual
+            const svg = document.getElementById('pinata-svg');
+            svg.classList.add('hit-effect');
+            setTimeout(() => svg.classList.remove('hit-effect'), 80);
+
+            // Física golpe
+            pinataState.pinata.vr += (Math.random() - 0.5) * 20;
+            pinataState.targetY -= 40;
+            setTimeout(() => { pinataState.targetY = pinataConfig.ropeLength; }, 200);
+
+            // Partículas golpe
+            let x = e.clientX || (e.touches ? e.touches[0].clientX : window.innerWidth/2);
+            let y = e.clientY || (e.touches ? e.touches[0].clientY : window.innerHeight/3);
+            for(let i=0; i<8; i++) pinataParticles.push(new PinataParticle(x, y, 'hit'));
+
+            // Mensajes
+            const msgs = ["¡ESO!", "¡DALE!", "¡FUERTE!", "¡DURO!"];
+            const msgEl = document.getElementById('pinata-message');
+            msgEl.innerText = msgs[Math.floor(Math.random() * msgs.length)];
+            msgEl.classList.add('show');
+            setTimeout(() => msgEl.classList.remove('show'), 500);
+
+            if (pinataState.health <= 0) breakPinata();
+        }
+
+        function breakPinata() {
+            pinataState.isBroken = true;
+            document.getElementById('pinata-svg').style.display = 'none';
+            document.getElementById('rope').style.display = 'none';
+
+            const rect = document.getElementById('pinata-wrapper').getBoundingClientRect();
+            for(let i=0; i<100; i++) {
+                pinataParticles.push(new PinataParticle(rect.left + rect.width/2, rect.top + rect.height/2, 'candy'));
+            }
+
+            document.getElementById('pinata-message').innerText = "¡PREMIO!";
+            document.getElementById('pinata-message').classList.add('show');
+            document.getElementById('continue-btn').classList.add('show');
+            if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+        }
+
+        function pinataLoop() {
+            pCtx.clearRect(0, 0, pinataCanvas.width, pinataCanvas.height);
+            updatePinataPhysics();
+
+            for (let i = pinataParticles.length - 1; i >= 0; i--) {
+                pinataParticles[i].update();
+                pinataParticles[i].draw(pCtx);
+                if (pinataParticles[i].life <= 0) pinataParticles.splice(i, 1);
+            }
+            pinataLoopId = requestAnimationFrame(pinataLoop);
+        }
+
+        function irACarta() {
+            cancelAnimationFrame(pinataLoopId); // Detener loop piñata
+            nextScene('scene-final');
+        }
+
+        /* --- 4. CONFETI FINAL --- */
+        const fCanvas = document.getElementById('confetti-canvas');
+        const fCtx = fCanvas.getContext('2d');
+        let fParticles = [];
+
+        function lanzarConfetiFinal() {
+            fCanvas.width = window.innerWidth;
+            fCanvas.height = window.innerHeight;
+            
+            for(let i=0; i<150; i++) {
+                fParticles.push({
+                    x: fCanvas.width/2, y: fCanvas.height,
+                    color: ['#ec4899', '#db2777', '#fcd34d'][Math.floor(Math.random()*3)],
+                    speedX: Math.random()*6-3, speedY: Math.random()*-10-5,
+                    gravity: 0.2, size: Math.random()*6+4
+                });
+            }
+            updateConfettiFinal();
+        }
+
+        function updateConfettiFinal() {
+            fCtx.clearRect(0, 0, fCanvas.width, fCanvas.height);
+            for(let i=0; i<fParticles.length; i++) {
+                let p = fParticles[i];
+                p.x += p.speedX; p.y += p.speedY; p.speedY += p.gravity;
+                fCtx.fillStyle = p.color;
+                fCtx.fillRect(p.x, p.y, p.size, p.size);
+            }
+            requestAnimationFrame(updateConfettiFinal);
+        }
+
+    </script>
+</body>
+</html>
