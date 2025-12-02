@@ -236,13 +236,23 @@
             text-align: center;
             z-index: 40;
             pointer-events: none;
+            /* Añadida transición para el movimiento al centro */
+            transition: bottom 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
         }
+
+        /* Clase para centrar la UI al ganar */
+        .pinata-ui.winner {
+            bottom: 50%;
+            transform: translateY(50%);
+        }
+
         .progress-bar-bg {
             width: 70%; max-width: 250px; height: 12px;
             background: rgba(0, 0, 0, 0.3);
             border-radius: 6px; margin: 0 auto;
             border: 1px solid rgba(255,255,255,0.5);
             overflow: hidden;
+            transition: opacity 0.3s; /* Para ocultarla suavemente */
         }
         .progress-bar-fill {
             height: 100%; width: 100%;
@@ -426,7 +436,7 @@
                 Eres mi pensamiento favorito de cada día.
             </p>
             <div style="border-top: 1px solid #eee; padding-top: 15px; color: #777; font-size: 0.9rem;">
-                Con mucho cariño, desde la distancia. ❤️
+                Con mucho amor, para mi corazon ❤️
             </div>
             <button onclick="location.reload()" style="margin-top: 20px; font-size: 0.9rem; padding: 0.8rem 1.5rem; background: #666;">
                 Ver de nuevo ↺
@@ -635,6 +645,12 @@
             document.getElementById('pinata-message').innerText = "¡PREMIO!";
             document.getElementById('pinata-message').classList.add('show');
             document.getElementById('continue-btn').classList.add('show');
+            
+            // Centrar UI
+            document.querySelector('.pinata-ui').classList.add('winner');
+            // Ocultar barra de vida
+            document.querySelector('.progress-bar-bg').style.opacity = '0';
+            
             if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
         }
 
